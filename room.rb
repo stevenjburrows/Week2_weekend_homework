@@ -1,14 +1,15 @@
 class Room
 
-  attr_reader:name, :songs, :capacity, :guests, :cost
+  attr_reader:name, :songs, :capacity, :guests, :cost, :till
 
-  def initialize(name, songs, capacity, cost, guests = [])
+  def initialize(name, songs, capacity, cost, till = 100, guests = [])
 
     @name = name
     @songs = songs
     @capacity = capacity
     @cost = cost
     @guests = guests
+    @till = till
 
   end
 
@@ -49,10 +50,19 @@ class Room
   end
 
   def is_favourite_song_playing(guest_name)
-    return 'Rock on' if @songs.any? { |song| song.name == guest_name.favourite_song  }
+    return "rock and roll ain't noise pollution " if @songs.any? { |song| song.name == guest_name.favourite_song  }
     return "I Can't Get No Satisfaction"
   end
 
+  def add_money_to_till
+    @till += @cost
+  end
 
+  def enter_room_with_till(guest)
+    add_guest(guest)
+    remove_money(guest)
+    add_money_to_till
+
+  end
 
 end

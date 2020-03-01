@@ -75,13 +75,36 @@ class TestRoom < Minitest::Test
 
   def test_if_favourite_song_is_playing
     @room1.add_guest(@guest2)
-    assert_equal('Rock on', @room1.is_favourite_song_playing(@guest2))
+    assert_equal("rock and roll ain't noise pollution ", @room1.is_favourite_song_playing(@guest2))
   end
 
   def test_if_favourite_song_isnt_playing
     @room1.add_guest(@guest1)
     #@room1.is_favourite_song_playing
     assert_equal("I Can't Get No Satisfaction", @room1.is_favourite_song_playing(@guest1))
+  end
+
+  def test_has_money_in_till
+    assert_equal(100, @room1.till)
+
+  end
+
+  def test_add_money_to_till
+    @room1.add_money_to_till
+    assert_equal(125, @room1.till)
+
+  end
+  def test_add_to_room_and_remove_money_add_to_till
+    @room1.enter_room_with_till(@guest2)
+    assert_equal(175, @guest2.wallet)
+    assert_equal(125, @room1.till)
+  end
+  def test_add_2_to_room_and_remove_money_add_to_till
+    @room1.enter_room_with_till(@guest2)
+    @room1.enter_room_with_till(@guest1)
+    assert_equal(175, @guest2.wallet)
+    assert_equal(75, @guest1.wallet)
+    assert_equal(150, @room1.till)
   end
 
 end
