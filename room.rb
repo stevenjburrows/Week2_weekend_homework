@@ -48,4 +48,11 @@ class Room
 
   end
 
+  def is_favourite_song_playing(guest_name)
+    return 'Rock on' if @songs.any? { |song| song.name == guest_name.favourite_song  }
+    return "I Can't Get No Satisfaction"
+  end
+
+
+
 end

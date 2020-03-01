@@ -14,9 +14,9 @@ class TestRoom < Minitest::Test
     @song3 = Song.new('Thunderstruck')
     @song4 = Song.new('Space Oddity')
     @songs = [@song1, @song2, @song3]
-    @guest1 = Guest.new('Ozzy Osbourne', 100)
-    @guest2 = Guest.new('Bruce Dickenson', 200)
-    @guest3 = Guest.new('Axel Rose', 150)
+    @guest1 = Guest.new('Ozzy Osbourne', 100, 'Paranoid')
+    @guest2 = Guest.new('Bruce Dickenson', 200, 'Fear of the dark')
+    @guest3 = Guest.new('Axel Rose', 150, 'Welcome to the jungle')
     @room1 = Room.new('The dreadnought', @songs, 2, 25)
 
   end
@@ -71,6 +71,17 @@ class TestRoom < Minitest::Test
       @room1.enter_room(@guest2)
 
     assert_equal(175, @guest2.wallet)
+  end
+
+  def test_if_favourite_song_is_playing
+    @room1.add_guest(@guest2)
+    assert_equal('Rock on', @room1.is_favourite_song_playing(@guest2))
+  end
+
+  def test_if_favourite_song_isnt_playing
+    @room1.add_guest(@guest1)
+    #@room1.is_favourite_song_playing
+    assert_equal("I Can't Get No Satisfaction", @room1.is_favourite_song_playing(@guest1))
   end
 
 end
