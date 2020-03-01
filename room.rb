@@ -1,13 +1,15 @@
 class Room
 
-  attr_reader:name, :songs, :capacity, :guests, :cost, :till
+  attr_reader:name, :songs, :capacity, :guests, :cost, :till, :food, :drink
 
-  def initialize(name, songs, capacity, cost, till = 100, guests = [])
+  def initialize(name, songs, capacity, cost, food, drink, till = 100, guests = [])
 
     @name = name
     @songs = songs
     @capacity = capacity
     @cost = cost
+    @food = food
+    @drink = drink
     @guests = guests
     @till = till
 
@@ -62,6 +64,18 @@ class Room
     add_guest(guest)
     remove_money(guest)
     add_money_to_till
+
+  end
+
+  def pay_for_drink(guest, drink)
+    guest.remove_money(drink.price)
+    @till += drink.price
+
+  end
+
+  def pay_for_food(guest, food)
+    guest.remove_money(food.price)
+    @till += food.price
 
   end
 

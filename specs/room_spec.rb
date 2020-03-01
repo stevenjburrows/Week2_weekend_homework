@@ -5,6 +5,8 @@ Minitest::Reporters.use! Minitest::Reporters::SpecReporter.new
 require_relative('../room')
 require_relative('../song')
 require_relative('../guest')
+require_relative('../food')
+require_relative('../drink')
 
 class TestRoom < Minitest::Test
 
@@ -14,10 +16,16 @@ class TestRoom < Minitest::Test
     @song3 = Song.new('Thunderstruck')
     @song4 = Song.new('Space Oddity')
     @songs = [@song1, @song2, @song3]
+    @food1 = Food.new('Cherry bomb', 5)
+    @food2 = Food.new('Pour Some Sugar On Me', 10)
+    @drink1 = Drink.new('Whiskey on the water', 5)
+    @drink2 = Drink.new("Beer Drinkers & Hellraisers", 8)
+    @food = [@food1, @food2]
+    @drink = [@drink1, @drink2]
     @guest1 = Guest.new('Ozzy Osbourne', 100, 'Paranoid')
     @guest2 = Guest.new('Bruce Dickenson', 200, 'Fear of the dark')
     @guest3 = Guest.new('Axel Rose', 150, 'Welcome to the jungle')
-    @room1 = Room.new('The dreadnought', @songs, 2, 25)
+    @room1 = Room.new('The dreadnought', @songs, 2, 25, @food, @drink)
 
   end
 
@@ -105,6 +113,46 @@ class TestRoom < Minitest::Test
     assert_equal(175, @guest2.wallet)
     assert_equal(75, @guest1.wallet)
     assert_equal(150, @room1.till)
+  end
+
+  def test_has_food
+    assert_equal(2, @room1.food.count)
+  end
+
+  def test_has_drink
+    assert_equal(2, @room1.drink.count)
+  end
+
+  def test_pay_for_drink
+    @room1.pay_for_drink(@guest1, @drink1)
+    assert_equal(95, @guest1.wallet)
+    assert_equal(105, @room1.till)
+
+  end
+
+  def test_pay_for_food
+    @room1.pay_for_food(@guest2, @food1)
+    assert_equal(195, @guest2.wallet)
+    assert_equal(105, @room1.till)
+
+  end
+
+  def test_add_guests_buying_food_and_drink
+    @room1.enter_room_with_till(@guest1)
+    @room1.enter_room_with_till(@guest2)
+    @room1.pay_for_drink(@guest1, @drink1)
+    @room1.pay_for_drink(@guest2, @drink2)
+    @room1.pay_for_food(@guest2, @food1)
+    @room1.pay_for_food(@guest1, @food2)
+
+    assert_equal(2, @room1.guests.count)
+    assert_equal("rock and roll ain't noise pollution ", @room1.is_favourite_song_playing(@guest2))
+    assert_equal("I Can't Get No Satisfaction", @room1.is_favourite_song_playing(@guest1))
+    assert_equal(162, @guest2.wallet)
+    assert_equal(60, @guest1.wallet)
+    assert_equal(178, @room1.till)
+
+
   end
 
 end

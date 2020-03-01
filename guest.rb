@@ -15,5 +15,4 @@ class Guest
 
   end
 
-
 end
