@@ -1,25 +1,50 @@
 class Room
 
-  attr_reader:name, :songs, :capacity, :guests
+  attr_reader:name, :songs, :capacity, :guests, :cost
 
-  def initialize(name, songs, capacity, guests = [])
+  def initialize(name, songs, capacity, cost, guests = [])
 
     @name = name
     @songs = songs
     @capacity = capacity
+    @cost = cost
     @guests = guests
 
   end
 
+  def add_song(song)
+    @songs << song
+
+
+  end
+
+  def remove_song(song)
+    @songs.delete(song)
+
+  end
+
   def add_guest(guest)
-    @guests << guest
+    @guests << guest if @guests.count < @capacity
+
 
   end
 
   def remove_guest(guest)
-    p @guests
     @guests.delete(guest)
-    p @guests
+
+  end
+
+  def remove_money(guest_name)
+  #   #for a selected guest reduce their wallet
+  #   #by a selected amount
+  #
+  #
+  guest_name.remove_money(@cost)
+  end
+
+  def enter_room(guest)
+    add_guest(guest)
+    remove_money(guest)
 
   end
 
